@@ -445,9 +445,27 @@ void BitVector::DumpHelper(const char* prefix, std::ostringstream& buffer) const
     buffer << prefix;
   }
 
+
   buffer << '(';
   for (size_t i = 0; i < storage_size_ * kWordBits; i++) {
     buffer << IsBitSet(i);
+
+    /* Round up to word boundaries for "idx+1" bits */
+    uint32_t new_size = BitsToWords(idx + 1);
+    DCHECK_GT(new_size, storage_size_);
+    uint32_t *new_storage =
+        static_cast<uint32_t*>(allocator_->Alloc(new_size * kWordBytes));
+    memcpy(new_storage, storage_, storage_size_ * kWordBytes);
+    // Zero out the new storage words.
+    memset(&new_storage[storage_size_], 0, (new_size - storage_size_) * kWordBytes);
+    // TODO: collect stats on space wasted because of resize.
+
+    // Free old storage.
+    allocator_->Free(storage_);
+
+    // Set fields.
+    storage_ = new_storage;
+    storage_size_ = new_size;
   }
   buffer << ')';
 }
