@@ -200,6 +200,13 @@ art_cflags := \
   -fvisibility=protected \
   $(art_default_gc_type_cflags)
 
+# Only test with anti-debugging flags for now.  Non-debug art builds compile with -O3 now.
+ifeq ($(USE_EXODUS_ART_OPTS),true)
+  art_cflags += \
+    $(DEBUG_SYMBOL_FLAGS) \
+    $(DEBUG_FRAME_POINTER_FLAGS)
+endif
+
 # Missing declarations: too many at the moment, as we use "extern" quite a bit.
 #  -Wmissing-declarations \
 
