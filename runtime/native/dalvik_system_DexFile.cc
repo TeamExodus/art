@@ -301,20 +301,6 @@ static jobjectArray DexFile_getClassNameList(JNIEnv* env, jclass, jobject cookie
 static jint GetDexOptNeeded(JNIEnv* env, const char* filename,
     const char* pkgname, const char* instruction_set, const jboolean defer) {
 
-/** TODO Identify the cyanogen
-##EXCEPTION
-Zygote  : Zygote died with exception
-Zygote  : java.lang.RuntimeException: Error starting system_server
-Zygote  : 	at com.android.internal.os.ZygoteInit.performSystemServerDexOpt(ZygoteInit.java:484)
-Zygote  : 	at com.android.internal.os.ZygoteInit.handleSystemServerProcess(ZygoteInit.java:430)
-Zygote  : 	at com.android.internal.os.ZygoteInit.startSystemServer(ZygoteInit.java:545)
-Zygote  : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:608)
-Zygote  : Caused by: java.io.FileNotFoundException: /system/framework/org.cyanogenmod.platform.jar
-Zygote  : 	at dalvik.system.DexFile.getDexOptNeeded(Native Method)
-Zygote  : 	at com.android.internal.os.ZygoteInit.performSystemServerDexOpt(ZygoteInit.java:476)
-Zygote  : 	... 3 more
-##EXCEPTION_END
-
   if ((filename == nullptr) || !OS::FileExists(filename)) {
     LOG(ERROR) << "DexFile_getDexOptNeeded file '" << filename << "' does not exist";
     ScopedLocalRef<jclass> fnfe(env, env->FindClass("java/io/FileNotFoundException"));
@@ -322,7 +308,6 @@ Zygote  : 	... 3 more
     env->ThrowNew(fnfe.get(), message);
     return OatFileAssistant::kNoDexOptNeeded;
   }
-*/
 
   const InstructionSet target_instruction_set = GetInstructionSetFromString(instruction_set);
   if (target_instruction_set == kNone) {
