@@ -204,7 +204,8 @@ art_cflags := \
 ifeq ($(USE_EXODUS_ART_OPTS),true)
   art_cflags += \
     $(DEBUG_SYMBOL_FLAGS) \
-    $(DEBUG_FRAME_POINTER_FLAGS)
+    $(DEBUG_FRAME_POINTER_FLAGS) \
+    $(EXODUS_ARCH_VARIANT_CFLAGS)
 endif
 
 # Missing declarations: too many at the moment, as we use "extern" quite a bit.
